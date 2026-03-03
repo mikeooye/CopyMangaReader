@@ -9,7 +9,7 @@
 // @match       *://*.2025copy.com/comic/*/chapter/*
 // @match       *://*.2026copy.com/comic/*/chapter/*
 // @grant       none
-// @version     1.26
+// @version     1.27
 // @author      chemPolonium
 // @description 简单的拷贝漫画阅读器，J/K 翻页，左右方向键改变章节，分号键奇偶切换，1/2 改变单双页
 // @run-at      document-end
@@ -24,6 +24,16 @@
   "use strict";
 
   document.getElementsByClassName("header")[0].remove();
+
+  let upMember = document.getElementsByClassName("upMember")[0];
+  if (upMember) {
+    upMember.remove();
+  }
+
+  let comicContainerAds = document.getElementsByClassName("comicContainerAds")[0];
+  if (comicContainerAds) {
+    comicContainerAds.remove();
+  }
 
   let comicContainerFluid = document.getElementsByClassName(
     "container-fluid comicContent"
@@ -120,7 +130,7 @@
     if (pageNum === 2) {
       comicList.style.gap = "12px";
     } else {
-      comicList.style.gap = "0px";
+      comicList.style.gap = "0";
     }
     moveToCurrentImage();
     pageNumPerScreen = pageNum;
@@ -203,6 +213,62 @@
   let prevChapterHref = footerChildren[1].children[0].href;
   let nextChapterHref = footerChildren[3].children[0].href;
   let chapterListHref = footerChildren[4].children[0].href;
+
+  // 创建悬浮帮助按钮
+  let helpButton = document.createElement("div");
+  helpButton.innerHTML = "帮助";
+  helpButton.setAttribute(
+    "style",
+    "position: fixed;\
+    bottom: 20px;\
+    left: 20px;\
+    padding: 8px 12px;\
+    background: rgba(0, 0, 0, 0.6);\
+    color: white;\
+    border-radius: 4px;\
+    cursor: pointer;\
+    font-size: 14px;\
+    z-index: 9999;\
+    user-select: none;"
+  );
+
+  let helpPanel = document.createElement("div");
+  helpPanel.innerHTML =
+    "<div style='font-size: 12px; line-height: 1.8;'>" +
+    "<div><b>J</b> - 下一页</div>" +
+    "<div><b>K</b> - 上一页</div>" +
+    "<div><b>←</b> - 上一章</div>" +
+    "<div><b>→</b> - 下一章</div>" +
+    "<div><b>L</b> - 章节列表</div>" +
+    "<div><b>F</b> - 全屏</div>" +
+    "<div><b>;</b> - 奇偶页切换</div>" +
+    "<div><b>1</b> - 单页模式</div>" +
+    "<div><b>2</b> - 双页模式</div>" +
+    "</div>";
+  helpPanel.setAttribute(
+    "style",
+    "display: none;\
+    position: fixed;\
+    bottom: 60px;\
+    left: 20px;\
+    padding: 12px;\
+    background: rgba(0, 0, 0, 0.8);\
+    color: white;\
+    border-radius: 4px;\
+    font-size: 14px;\
+    z-index: 9999;"
+  );
+
+  helpButton.addEventListener("mouseenter", () => {
+    helpPanel.style.display = "block";
+  });
+
+  helpButton.addEventListener("mouseleave", () => {
+    helpPanel.style.display = "none";
+  });
+
+  document.body.appendChild(helpButton);
+  document.body.appendChild(helpPanel);
 
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
