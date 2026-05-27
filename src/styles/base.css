@@ -1,0 +1,39 @@
+/* 固定样式：始终生效 */
+.upMember, .comicContainerAds { display: none !important; }
+.header { display: flex; align-items: center; gap: 10px; }
+.mode-badge {
+    background: #ff4500; color: white; padding: 2px 8px;
+    border-radius: 4px; font-size: 12px; font-weight: bold;
+}
+
+/* Webtoon 模式（body 没有 mode-scroll class） */
+body:not(.mode-scroll) .comicContent .container.comic-size-1,
+body:not(.mode-scroll) .comicContent-list.comic-size-1 {
+    width: var(--comic-width, 640px) !important;
+    max-width: var(--comic-width, 640px) !important;
+    min-width: var(--comic-width, 640px) !important;
+}
+body:not(.mode-scroll) .comicContent .container.comic-size-1 {
+    margin: 0 auto !important;
+}
+body:not(.mode-scroll) .comicContent-list {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+body:not(.mode-scroll) .comicContent-list li {
+    width: 100% !important;
+}
+body:not(.mode-scroll) .comicContent-list li img {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* 纵向阅读模式：保留原始布局，只隐藏广告 */
+body.mode-scroll .comicContent .container.comic-size-1,
+body.mode-scroll .comicContent-list.comic-size-1,
+body.mode-scroll .container {
+    width: auto !important;
+    max-width: none !important;
+    min-width: auto !important;
+}
